@@ -14,7 +14,7 @@ class Zimmer(Base):
     __tablename__ = "zimmer"
 
     preis: Mapped[Decimal]
-    """Der Preis des Zimmers"""
+    """Der Preis des Zimmers."""
 
     zimmernummer: Mapped[str]
     """""Die Zimmernummer des Zimmers."""
@@ -29,7 +29,7 @@ class Zimmer(Base):
     """ID des zugehörigen Hotels als Fremdschlüssel in der DB-Tabelle."""
 
     def __repr__(self) -> str:
-        """Ausgabe eines Standorts als String ohne die Hoteldaten."""
+        """Ausgabe eines Zimmers als String ohne die Hoteldaten."""
         return (
             f"Preis(id={self.id}, preis={self.preis}, "
             + f"zimmernummer={self.zimmernummer}"
