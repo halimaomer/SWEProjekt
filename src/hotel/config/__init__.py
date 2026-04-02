@@ -1,29 +1,29 @@
 """Modul zur Konfiguration."""
 
-from patient.config.db import (
+from hotel.config.db import (
     db_connect_args,
     db_dialect,
     db_log_statements,
     db_url,
     db_url_admin,
 )
-from patient.config.dev_modus import dev_db_populate, dev_keycloak_populate
-from patient.config.excel import excel_enabled
-from patient.config.graphql import graphql_ide
-from patient.config.keycloak import (
+from hotel.config.dev_modus import dev_db_populate, dev_keycloak_populate
+from hotel.config.excel import excel_enabled
+from hotel.config.graphql import graphql_ide
+from hotel.config.keycloak import (
     csv_config,
     keycloak_admin_config,
     keycloak_config,
 )
-from patient.config.logger import config_logger
-from patient.config.mail import (
+from hotel.config.logger import config_logger
+from hotel.config.mail import (
     mail_enabled,
     mail_host,
     mail_port,
     mail_timeout,
 )
-from patient.config.server import host_binding, port
-from patient.config.tls import tls_certfile, tls_keyfile
+from hotel.config.server import host_binding, port
+from hotel.config.tls import tls_certfile, tls_keyfile
 
 __all__ = [
     "config_logger",
