@@ -1,7 +1,7 @@
 info:
-  name: Suche mit nicht-vorhandener Emailadresse
+  name: Suche name von einem Hotel mit nicht-vorhandener ID 999999
   type: graphql
-  seq: 5
+  seq: 2
 
 graphql:
   method: POST
@@ -13,8 +13,8 @@ graphql:
   body:
     query: |-
       {
-        patienten(suchparameter: {email: "Nicht.Vorhanden@acme.com"}) {
-          id
+        hotel(hotelId: "999999") {
+          name
         }
       }
   auth: inherit
@@ -27,10 +27,8 @@ runtime:
     - expression: res.headers['content-type']
       operator: eq
       value: application/json
-    - expression: res.body.data.patienten
-      operator: isArray
-    - expression: res.body.data.patienten
-      operator: isEmpty
+    - expression: res.body.data.hotel
+      operator: isNull
 
 settings:
   encodeUrl: true
