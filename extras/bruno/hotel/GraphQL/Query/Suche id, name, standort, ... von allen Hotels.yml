@@ -1,0 +1,72 @@
+info:
+  name: Suche id, name, standort, ... von allen Hotels
+  type: graphql
+  seq: 4
+
+graphql:
+  method: POST
+  url: "{{graphqlUrl}}"
+  headers:
+    - name: ""
+      value: ""
+      disabled: true
+  body:
+    query: |-
+      {
+        hotels(suchparameter: {}) {
+          id
+          namestandort {
+            plz
+            ort
+            land
+          }
+          zimmer {
+            preis
+            zimmernummer
+          }
+          erzeugt
+          aktualisiert
+        }
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test('Body mit den Properties', () => {
+          res.getBody()
+            .data
+            .hotels
+            .forEach(hotel => {
+              const { id, name, standort, zimmer } = hotel;
+              expect(id).to.be.gte(0);
+              expect(name).to.be.a('string').that.is.not.empty;
+              expect(standort).to.be.an('object');
+              expect(standort.plz).to.be.a('string');
+              expect(standort.ort).to.be.a('string');
+              expect(zimmer).to.be.an('array');
+
+              zimmer.forEach(z => {
+                expect(z.preis).to.exist;
+                expect(z.zimmernummer).to.be.a('string');
+              });
+            });
+        });
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.headers['content-type']
+      operator: eq
+      value: application/json
+    - expression: res.body.data.hotels
+      operator: isArray
+    - expression: res.body.data.hotels
+      operator: isNotEmpty
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
