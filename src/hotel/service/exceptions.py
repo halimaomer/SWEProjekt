@@ -55,20 +55,20 @@ class ForbiddenError(Exception):
 
 
 class NotFoundError(Exception):
-    """Exception, falls kein Patient gefunden wurde."""
+    """Exception, falls kein Hotel gefunden wurde."""
 
     def __init__(
         self,
-        patient_id: int | None = None,
+        hotel_id: int | None = None,
         suchparameter: Mapping[str, str] | None = None,
     ) -> None:
         """Initialisierung von NotFoundError mit ID und Suchparameter.
 
-        :param patient_id: Patient-ID, zu der nichts gefunden wurde
+        :param hotel_id: Hotel-ID, zu der nichts gefunden wurde
         :param suchparameter: Suchparameter, zu denen nichts gefunden wurde
         """
         super().__init__("Not Found")
-        self.patient_id = patient_id
+        self.patient_id = hotel_id
         self.suchparameter = suchparameter
 
 
