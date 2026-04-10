@@ -1,6 +1,6 @@
 """Geschäftslogik zum Lesen von Hoteldaten."""
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from typing import Final
 
 from loguru import logger
@@ -72,3 +72,21 @@ class HotelService:
         )
         logger.debug("{}", hotel_dto_slice)
         return hotel_dto_slice
+
+    def find_name(self, teil: str) -> Sequence[str]:
+        """Suche Namen zu einem Teilstring.
+
+        :param teil: Teilstring der gesuchten Namen
+        :return: Liste der gefundenen Namen oder eine leere Liste
+        :rtype: list[str]
+        :raises NotFoundError: Falls keine Namen gefunden wurden
+        """
+        logger.debug("teil={}", teil)
+        with Session() as session:
+            namen: Final = self.repo.find_name(teil=teil, session=session)
+            session.commit()
+
+        logger.debug("{}", namen)
+        if len(namen) == 0:
+            raise NotFoundError
+        return namen
