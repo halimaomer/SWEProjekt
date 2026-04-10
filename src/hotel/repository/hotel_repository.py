@@ -1,6 +1,6 @@
 """Repository fuer persistente Hoteldaten."""
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from typing import Final
 
 from loguru import logger
@@ -180,3 +180,23 @@ class HotelRepository:
             return
         session.delete(hotel)
         logger.debug("ok")
+
+    def find_name(self, teil: str, session: Session) -> Sequence[str]:
+        """Suche Namen zu einem Teilstring.
+
+        :param teil: Teilstring zu den gesuchten Namen
+        :param session: Session für SQLAlchemy
+        :return: Liste der gefundenen Namen oder eine leere Liste
+        :rtype: Sequence[str]
+        """
+        logger.debug("teil={}", teil)
+
+        statement: Final = (
+            select(Hotel.name)
+            .filter(Hotel.name.ilike(f"%{teil}%"))
+            .distinct()
+        )
+        namen: Final = (session.scalars(statement)).all()
+
+        logger.debug("namen={}", namen)
+        return namen
