@@ -1,0 +1,31 @@
+@startuml Use Cases Hotel
+
+actor Gast
+actor Admin
+actor HotelManager
+
+rectangle hotel {
+
+' Gast Use Cases
+Gast --> (Hotel suchen)
+Gast --> (Hotel ansehen)
+Gast --> (Zimmer buchen)
+
+' Admin Use Cases 
+Admin --> (Hotel anlegen)
+Admin --> (Hotel ändern)
+Admin --> (Hotel löschen)
+
+' Manager Use Cases 
+HotelManager --> (Hotel suchen)
+HotelManager --> (Hotel ändern)
+
+' Erweiterte fachliche Use Cases
+    Admin --> (Zimmer verwalten)
+    Admin --> (Standort pflegen)
+
+}
+
+footer (c) Halima Omer, Alisa Knöbl
+
+@enduml
