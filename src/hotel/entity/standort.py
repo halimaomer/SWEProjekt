@@ -36,7 +36,7 @@ class Standort(Base):
     """ID des zugehörigen Hotels als Fremdschlüssel in der DB-Tabelle."""
 
     hotel: Mapped[Hotel] = relationship(  # noqa: F821 # ty: ignore[unresolved-reference] # pyright: ignore[reportUndefinedVariable]
-    back_populates="standort",
+        back_populates="standort",
     )
     """Das zugehörige transiente Hotel-Objekt."""
 

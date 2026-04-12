@@ -1,4 +1,5 @@
 """Pydantic-Model für das Hotel."""
+
 from typing import Final
 
 from loguru import logger
@@ -30,13 +31,10 @@ class HotelModel(HotelUpdateModel):
                     "hausnummer": "1a",
                     "plz": "12345",
                     "ort": "Musterstadt",
-                    "land": "Deutschland"
+                    "land": "Deutschland",
                 },
                 "zimmer": [
-                    {
-                        "preis": "100",
-                        "zimmernummer": "1"
-                    },
+                    {"preis": "100", "zimmernummer": "1"},
                 ],
             },
         }
@@ -53,8 +51,6 @@ class HotelModel(HotelUpdateModel):
 
         hotel: Final = Hotel(**hotel_dict)
         hotel.standort = self.standort.to_standort()
-        hotel.zimmer = [
-            zimmer_model.to_zimmer() for zimmer_model in self.zimmer
-        ]
+        hotel.zimmer = [zimmer_model.to_zimmer() for zimmer_model in self.zimmer]
         logger.debug("hotel={}", hotel)
         return hotel

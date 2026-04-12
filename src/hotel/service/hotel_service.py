@@ -62,9 +62,7 @@ class HotelService:
             if len(hotel_slice.content) == 0:
                 raise NotFoundError(suchparameter=suchparameter)
 
-            hotel_dto: Final = tuple(
-                HotelDTO(hotel) for hotel in hotel_slice.content
-            )
+            hotel_dto: Final = tuple(HotelDTO(hotel) for hotel in hotel_slice.content)
             session.commit()
 
         hotel_dto_slice = Slice(

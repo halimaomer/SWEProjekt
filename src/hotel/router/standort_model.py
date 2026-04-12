@@ -30,7 +30,7 @@ class StandortModel(BaseModel):
                 "hausnummer": "1a",
                 "plz": "12345",
                 "ort": "Musterstadt",
-                "land": "Deutschland"
+                "land": "Deutschland",
             }
         }
     )

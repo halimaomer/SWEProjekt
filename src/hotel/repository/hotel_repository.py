@@ -160,9 +160,7 @@ class HotelRepository:
         """
         logger.debug("{}", hotel)
 
-        if (
-            hotel_db := self.find_by_id(hotel_id=hotel.id, session=session)
-        ) is None:
+        if (hotel_db := self.find_by_id(hotel_id=hotel.id, session=session)) is None:
             return None
 
         logger.debug("{}", hotel_db)
@@ -192,9 +190,7 @@ class HotelRepository:
         logger.debug("teil={}", teil)
 
         statement: Final = (
-            select(Hotel.name)
-            .filter(Hotel.name.ilike(f"%{teil}%"))
-            .distinct()
+            select(Hotel.name).filter(Hotel.name.ilike(f"%{teil}%")).distinct()
         )
         namen: Final = (session.scalars(statement)).all()
 

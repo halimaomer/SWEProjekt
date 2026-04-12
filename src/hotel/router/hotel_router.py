@@ -117,9 +117,7 @@ def _hotel_slice_to_page(
     hotel_slice: Slice[HotelDTO],
     pageable: Pageable,
 ) -> dict[str, Any]:
-    hotel_dict: Final = tuple(
-        _hotel_to_dict(hotel) for hotel in hotel_slice.content
-    )
+    hotel_dict: Final = tuple(_hotel_to_dict(hotel) for hotel in hotel_slice.content)
     page: Final = Page.create(
         content=hotel_dict,
         pageable=pageable,

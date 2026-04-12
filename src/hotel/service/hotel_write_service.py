@@ -57,9 +57,7 @@ class HotelWriteService:
 
         with Session() as session:
             if (
-                hotel_db := self.repo.find_by_id(
-                    hotel_id=hotel_id, session=session
-                )
+                hotel_db := self.repo.find_by_id(hotel_id=hotel_id, session=session)
             ) is None:
                 raise NotFoundError(hotel_id)
             if hotel_db.version > version:

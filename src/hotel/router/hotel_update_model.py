@@ -16,13 +16,7 @@ class HotelUpdateModel(BaseModel):
     name: Annotated[str, StringConstraints(max_length=64)]
     """Der Name des Hotels."""
 
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "name": "Hotel am Markt"
-            }
-        }
-    )
+    model_config = ConfigDict(json_schema_extra={"example": {"name": "Hotel am Markt"}})
 
     def to_dict(self) -> dict[str, Any]:
         """Konvertierung der primitiven Attribute in ein Dictionary.

@@ -19,12 +19,7 @@ class ZimmerModel(BaseModel):
     """Die Zimmernummer."""
 
     model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "preis": "100",
-                "zimmernummer": "1"
-            }
-        }
+        json_schema_extra={"example": {"preis": "100", "zimmernummer": "1"}}
     )
 
     def to_zimmer(self) -> Zimmer:

@@ -75,6 +75,6 @@ class Hotel(Base):
     def __repr__(self) -> str:
         """Ausgabe eines Hotels als String."""
         return (
-        f"Hotel(id={self.id}, name={self.name}, "
-        f"erzeugt={self.erzeugt}, aktualisiert={self.aktualisiert})"
+            f"Hotel(id={self.id}, name={self.name}, "
+            f"erzeugt={self.erzeugt}, aktualisiert={self.aktualisiert})"
         )
