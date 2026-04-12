@@ -1,0 +1,64 @@
+@startuml Schichtenarchitektur
+
+package hotel #DDDDDD {
+    package rest #FFFFFF {
+        [@router.get()\nget_by_id()\n\n@router.get()\nget()] as HotelGetController
+        [@router.post()\npost()\n\n@router.put()\nput()\n\n@router.delete()\ndelete_by_id()] as HotelWriteController
+        [@router.get()\nliveness()\n\n@router.get()\nreadiness()] as HealthController
+
+        [HotelGetController] -right[hidden]-> [HotelWriteController]
+    }
+
+    package service #FFFFFF {
+        [find_by_id()\nfind()] as HotelReadService
+        [create()\nupdate()\ndelete()] as HotelWriteService
+    }
+
+    package repository #FFFFFF {
+        [find_by_id()\nfind()\ncreate()\nupdate()\ndelete_by_id()\ncheck_db_connection()] as HotelRepository
+    }
+
+    package entity #FFFFFF {
+        [Hotel]
+        [Standort]
+        [Zimmer]
+
+        [Hotel] -right[hidden]-> [Standort]
+        [Standort] -down[hidden]-> [Zimmer]
+    }
+
+    [HotelGetController] --> [HotelReadService]
+    [HotelWriteController] --> [HotelWriteService]
+    [HealthController] --> [HotelRepository]
+
+    [HotelReadService] --> [HotelRepository]
+    [HotelWriteService] --> [HotelRepository]
+
+    [HotelGetController] ..> [Hotel]
+    [HotelWriteController] ..> [Hotel]
+    [HotelReadService] ..> [Hotel]
+    [HotelWriteService] ..> [Hotel]
+    [HotelRepository] ..> [Hotel]
+}
+
+RESTClient ~~> [HotelGetController]
+RESTClient ~~> [HotelWriteController]
+
+cloud {
+    [SQLAlchemy\n(OR-Mapping)] as SQLAlchemy
+}
+
+[HotelRepository] ~down~> [SQLAlchemy]
+entity ~~> [SQLAlchemy]
+
+database "DB hotel" as db {
+    [Tabelle hotel]
+    [Tabelle standort]
+    [Tabelle zimmer]
+}
+
+[SQLAlchemy] ~down~> db
+
+footer (c) Halima Omer, Alisa Knöbl
+
+@enduml

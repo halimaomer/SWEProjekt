@@ -1,0 +1,44 @@
+@startuml Hotel Aggregate-Root
+
+package "hotel.entity" <<Frame>> {
+
+    class Hotel <<Entity>> {
+        + id : int
+        + name : str
+        + version : int
+        + erzeugt : datetime
+        + aktualisiert : datetime
+    }
+
+    class Standort <<Entity>> {
+        + id : int
+        + strasse : str
+        + hausnummer : str
+        + plz : str
+        + ort : str
+        + land : str
+        + hotel_id : int
+    }
+
+    class Zimmer <<Entity>> {
+        + id : int
+        + preis : Decimal
+        + zimmernummer : str
+        + hotel_id : int
+    }
+
+    Hotel *-- "1" Standort
+
+    Hotel *-- "0..*" Zimmer
+}
+
+abstract class Base <<SQLAlchemy>> {
+}
+
+Hotel --|> Base
+Standort --|> Base
+Zimmer --|> Base
+
+footer (c) Halima Omer, Alisa Knöbl
+
+@enduml
