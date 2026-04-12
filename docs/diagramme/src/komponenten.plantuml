@@ -1,0 +1,63 @@
+@startuml Komponenten
+
+left to right direction
+
+actor RESTClient
+actor GraphQLClient
+
+node "hotel" {
+  [hotel_get_controller]
+  [hotel_write_controller]
+  [schema]
+
+  [hotel_read_service]
+  [hotel_write_service]
+
+  [hotel_repository]
+
+  [mailer]
+}
+
+
+cloud {
+    [SQLAlchemy]
+}
+
+cloud {
+    [smtp]
+}
+
+database "DB hotel" {
+    [Tabelle hotel]
+    [Tabelle standort]
+    [Tabelle zimmer]
+}
+
+node {
+    [Mailserver]
+}
+
+RESTClient ~~> [hotel_get_controller]
+RESTClient ~~> [hotel_write_controller]
+GraphQLClient ~~> [schema]
+
+
+[hotel_get_controller] ..> [hotel_read_service]
+[hotel_write_controller] ..> [hotel_write_service]
+[schema] ..> [hotel_read_service]
+[schema] ..> [hotel_write_service]
+[hotel_read_service] ..> [hotel_repository]
+[hotel_write_service] ..> [hotel_repository]
+
+[hotel_repository] ~~> [SQLAlchemy]
+[SQLAlchemy] ~~> [Tabelle hotel]
+[SQLAlchemy] ~~> [Tabelle standort]
+[SQLAlchemy] ~~> [Tabelle zimmer]
+
+[hotel_write_service] ..> [mailer]
+[mailer] ~~> [smtp]
+[smtp] ~~> [Mailserver]
+
+footer (c) Halima Omer, Alisa Knöbl
+
+@enduml
