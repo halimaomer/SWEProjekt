@@ -1,3 +1,3 @@
 # Modul für die GraphQL-Schnittstelle
 
-Noch nicht dokumentiert.
+::: hotel.graphql_api
