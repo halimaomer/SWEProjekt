@@ -5,7 +5,8 @@ from typing import Final
 
 from loguru import logger
 from sqlalchemy import func, select
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session as DbSession
+from sqlalchemy.orm import joinedload
 
 from hotel.entity.hotel import Hotel
 from hotel.repository.pageable import Pageable
@@ -15,7 +16,7 @@ from hotel.repository.slice import Slice
 class HotelRepository:
     """Repository-Klasse mit CRUD-Methoden für die Entity-Klasse Hotel."""
 
-    def find_by_id(self, hotel_id: int | None, session: Session) -> Hotel | None:
+    def find_by_id(self, hotel_id: int | None, session: DbSession) -> Hotel | None:
         """Suche mit der Hotel-ID.
 
         :param hotel_id: ID des gesuchten Hotels
@@ -42,7 +43,7 @@ class HotelRepository:
         self,
         suchparameter: Mapping[str, str],
         pageable: Pageable,
-        session: Session,
+        session: DbSession,
     ) -> Slice[Hotel]:
         """Suche mit Suchparameter.
 
@@ -66,7 +67,7 @@ class HotelRepository:
                 return hotels
         return Slice(content=(), total_elements=0)
 
-    def _find_all(self, pageable: Pageable, session: Session) -> Slice[Hotel]:
+    def _find_all(self, pageable: Pageable, session: DbSession) -> Slice[Hotel]:
         logger.debug("aufgerufen")
         offset = pageable.number * pageable.size
         statement: Final = (
@@ -85,7 +86,7 @@ class HotelRepository:
         logger.debug("hotel_slice={}", hotel_slice)
         return hotel_slice
 
-    def _count_all_rows(self, session: Session) -> int:
+    def _count_all_rows(self, session: DbSession) -> int:
         statement: Final = select(func.count()).select_from(Hotel)
         count: Final = session.execute(statement).scalar()
         return count if count is not None else 0
@@ -94,7 +95,7 @@ class HotelRepository:
         self,
         teil: str,
         pageable: Pageable,
-        session: Session,
+        session: DbSession,
     ) -> Slice[Hotel]:
         logger.debug("teil={}", teil)
         offset = pageable.number * pageable.size
@@ -119,7 +120,7 @@ class HotelRepository:
         logger.debug("{}", hotel_slice)
         return hotel_slice
 
-    def _count_rows_name(self, teil: str, session: Session) -> int:
+    def _count_rows_name(self, teil: str, session: DbSession) -> int:
         statement: Final = (
             select(func.count())
             .select_from(Hotel)
@@ -128,7 +129,7 @@ class HotelRepository:
         count: Final = session.execute(statement).scalar()
         return count if count is not None else 0
 
-    def create(self, hotel: Hotel, session: Session) -> Hotel:
+    def create(self, hotel: Hotel, session: DbSession) -> Hotel:
         """Ein neues Hotel speichern.
 
         :param hotel: Die Daten des neuen Hotels
@@ -149,7 +150,7 @@ class HotelRepository:
         logger.debug("hotel_id={}", hotel.id)
         return hotel
 
-    def update(self, hotel: Hotel, session: Session) -> Hotel | None:
+    def update(self, hotel: Hotel, session: DbSession) -> Hotel | None:
         """Ein Hotel aktualisieren.
 
         :param hotel: Die neuen Hoteldaten
@@ -166,7 +167,7 @@ class HotelRepository:
         logger.debug("{}", hotel_db)
         return hotel_db
 
-    def delete_by_id(self, hotel_id: int, session: Session) -> None:
+    def delete_by_id(self, hotel_id: int, session: DbSession) -> None:
         """Die Daten zu einem Hotel löschen.
 
         :param hotel_id: Die ID des zu löschenden Hotels
@@ -179,7 +180,7 @@ class HotelRepository:
         session.delete(hotel)
         logger.debug("ok")
 
-    def find_name(self, teil: str, session: Session) -> Sequence[str]:
+    def find_name(self, teil: str, session: DbSession) -> Sequence[str]:
         """Suche Namen zu einem Teilstring.
 
         :param teil: Teilstring zu den gesuchten Namen

@@ -10,6 +10,7 @@ from hotel.router.constants import IF_MATCH, IF_MATCH_MIN_LEN
 from hotel.router.dependencies import get_write_service
 from hotel.router.hotel_model import HotelModel
 from hotel.router.hotel_update_model import HotelUpdateModel
+from hotel.security import Role, RolesRequired
 from hotel.service import HotelWriteService
 
 __all__ = ["hotel_write_router"]
@@ -44,7 +45,9 @@ def post(
     )
 
 
-@hotel_write_router.put("/{hotel_id}")
+@hotel_write_router.put(
+    "/{hotel_id}", dependencies=[Depends(RolesRequired([Role.ADMIN, Role.PATIENT]))]
+)
 def put(
     hotel_id: int,
     hotel_update_model: HotelUpdateModel,
@@ -107,7 +110,9 @@ def put(
     )
 
 
-@hotel_write_router.delete("/{hotel_id}")
+@hotel_write_router.delete(
+    "/{hotel_id}", dependencies=[Depends(RolesRequired([Role.ADMIN, Role.PATIENT]))]
+)
 def delete_by_id(
     hotel_id: int,
     service: Annotated[HotelWriteService, Depends(get_write_service)],

@@ -113,11 +113,14 @@ class DbPopulateService:
 
     def _load_csv_files(self) -> None:
         logger.debug("begin")
-        tabellen: Final = ["hotel", "zimmer", "standort"]
+        tabellen = ["hotel", "zimmer", "standort"]
         csv_path: Final = "/init/hotel/csv"
         # siehe extras/compose/postgres/compose.init.yml
         with self.engine_admin.connect() as connection:
             connection.execute(text("SET search_path TO hotel;"))
+            connection.execute(
+                text("TRUNCATE TABLE zimmer, standort, hotel RESTART IDENTITY CASCADE;")
+            )
             for tabelle in tabellen:
                 self._load_csv_file(
                     tabelle=tabelle,
