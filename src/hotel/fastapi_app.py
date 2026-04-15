@@ -39,6 +39,7 @@ from hotel.config.dev.keycloak_populate import keycloak_populate
 from hotel.config.dev.keycloak_populate_router import (
     router as keycloak_populate_router,
 )
+from hotel.graphql_api import graphql_router
 from hotel.problem_details import create_problem_details
 from hotel.repository.session_factory import engine
 from hotel.router import (
@@ -134,7 +135,7 @@ if dev_keycloak_populate:
 # --------------------------------------------------------------------------------------
 # G r a p h Q L
 # --------------------------------------------------------------------------------------
-# app.include_router(graphql_router, prefix="/graphql")
+app.include_router(graphql_router, prefix="/graphql")
 
 
 # --------------------------------------------------------------------------------------
@@ -235,5 +236,14 @@ def version_outdated_error_handler(
     """
     return create_problem_details(
         status_code=status.HTTP_412_PRECONDITION_FAILED,
+        detail=str(err),
+    )
+
+
+@app.exception_handler(Exception)
+def general_exception_handler(_request: Request, err: Exception) -> Response:
+    logger.exception("UNHANDLED ERROR")
+    return create_problem_details(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         detail=str(err),
     )
